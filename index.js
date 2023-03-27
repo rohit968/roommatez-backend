@@ -22,7 +22,10 @@ app.use(cookieParser());
 app.use(cors(corsConfig));
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
-mongoose.connect(process.env.DATABASE_CONNECTION_URL);
+mongoose.connect(process.env.DATABASE_CONNECTION_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 const jwt_secret = "dadjkaksfjkalfjdfjnafjdsjkajfnjs";
 
