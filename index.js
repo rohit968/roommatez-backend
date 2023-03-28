@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const bodyparser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
@@ -87,15 +86,13 @@ app.post('/uploads', photosMiddleware.array('photos', 50), (req, res) => {
     const ext = parts[parts.length - 1];
     const newPath = path + '.' + ext;
     fs.renameSync(path, newPath);
-    console.log(newPath);
-    uploadedFiles.push(newPath.replace('uploads/', ''));
+    uploadedFiles.push(newPath);
   }
   res.json(uploadedFiles);
 })
 
 app.post('/addnewplace', async (req, res) => {
   const { token } = req.cookies;
-  console.log(JSON.stringify(req.cookies))
   const { title,
     address,
     addedPhotos,
@@ -155,8 +152,6 @@ app.put('/addnewplace', (req, res) => {
     checkIn,
     checkOut,
     noOfGuests, price } = req.body;
-
-  console.log(addedPhotos);
 
   jwt.verify(token, jwt_secret, {}, async (err, user) => {
     if (err) throw err;
